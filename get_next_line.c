@@ -6,11 +6,18 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:04:53 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/28 13:38:01 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:07:11 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*init_remain(char *remain)
+{
+	if (remain)
+		return (remain);
+	return (ft_strdup(""));
+}
 
 char	*read_until_nextline(int fd, char *remain)
 {
@@ -21,12 +28,9 @@ char	*read_until_nextline(int fd, char *remain)
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	remain = init_remain(remain);
 	if (!remain)
-	{
-		remain = ft_strdup("");
-		if (!remain)
-			return (free(buffer), NULL);
-	}
+		return (NULL);
 	read_bytes = 1;
 	while (!ft_strchr(remain, '\n') && read_bytes != 0)
 	{
