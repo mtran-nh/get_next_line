@@ -6,7 +6,7 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:35:12 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/25 21:34:42 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/07/26 12:21:52 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 20
+#  define BUFFER_SIZE 42
 # endif
 
 # include <stdio.h>

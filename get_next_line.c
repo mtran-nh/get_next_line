@@ -6,7 +6,7 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:04:53 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/25 22:15:29 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/07/28 13:38:01 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ char	*read_until_nextline(int fd, char *remain)
 	if (!buffer)
 		return (NULL);
 	if (!remain)
+	{
 		remain = ft_strdup("");
+		if (!remain)
+			return (free(buffer), NULL);
+	}
 	read_bytes = 1;
 	while (!ft_strchr(remain, '\n') && read_bytes != 0)
 	{
@@ -31,10 +35,10 @@ char	*read_until_nextline(int fd, char *remain)
 			return (free(buffer), free(remain), NULL);
 		buffer[read_bytes] = '\0';
 		temp = remain;
-		remain = ft_strjoin(remain, buffer);
+		remain = ft_strjoin(temp, buffer);
+		free(temp);
 		if (!remain)
 			return (free(buffer), NULL);
-		free(temp);
 	}
 	return (free(buffer), remain);
 }
@@ -44,9 +48,9 @@ char	*write_line(char *remain)
 	char	*line;
 	int		i;
 
-	i = 0;
-	if (!remain)
+	if (!remain || remain[0] == '\0')
 		return (NULL);
+	i = 0;
 	while (remain[i] && remain[i] != '\n')
 		i++;
 	if (remain[i] == '\n')
@@ -80,10 +84,10 @@ char	*new_remain(char *remain)
 		i++;
 	if (!remain[i])
 		return (free(remain), NULL);
+	i++;
 	new_remain = malloc(ft_strlen(remain + i) + 1);
 	if (!new_remain)
 		return (free(remain), NULL);
-	i++;
 	while (remain[i])
 		new_remain[j++] = remain[i++];
 	new_remain[j] = '\0';
@@ -101,6 +105,12 @@ char	*get_next_line(int fd)
 	if (!remain)
 		return (NULL);
 	next_line = write_line(remain);
+	if (!next_line)
+	{
+		free(remain);
+		remain = NULL;
+		return (NULL);
+	}
 	remain = new_remain(remain);
 	return (next_line);
 }
