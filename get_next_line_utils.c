@@ -6,7 +6,7 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:05:00 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/25 21:50:30 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:00:31 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	len1;
 	size_t	len2;
 
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
 	if (!s1 || !s2)
 		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
 	str = malloc(len1 + len2 + 1);
 	if (!str)
 		return (NULL);

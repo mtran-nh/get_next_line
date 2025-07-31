@@ -6,17 +6,22 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:04:53 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/28 14:07:11 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/07/31 19:56:30 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*init_remain(char *remain)
+static char	*init_remain(char *remain, char *buffer)
 {
+	char	*empty;
+
 	if (remain)
 		return (remain);
-	return (ft_strdup(""));
+	empty = ft_strdup("");
+	if (!empty)
+		return (free(buffer), NULL);
+	return (empty);
 }
 
 char	*read_until_nextline(int fd, char *remain)
@@ -27,8 +32,8 @@ char	*read_until_nextline(int fd, char *remain)
 
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
-		return (NULL);
-	remain = init_remain(remain);
+		return (free(remain), NULL);
+	remain = init_remain(remain, buffer);
 	if (!remain)
 		return (NULL);
 	read_bytes = 1;
@@ -77,24 +82,18 @@ char	*write_line(char *remain)
 char	*new_remain(char *remain)
 {
 	int		i;
-	int		j;
 	char	*new_remain;
 
 	i = 0;
-	j = 0;
 	if (!remain)
 		return (NULL);
 	while (remain[i] && remain[i] != '\n')
 		i++;
-	if (!remain[i])
+	if (!remain[i] || !remain[i + 1])
 		return (free(remain), NULL);
-	i++;
-	new_remain = malloc(ft_strlen(remain + i) + 1);
+	new_remain = ft_strdup(remain + i + 1);
 	if (!new_remain)
 		return (free(remain), NULL);
-	while (remain[i])
-		new_remain[j++] = remain[i++];
-	new_remain[j] = '\0';
 	return (free(remain), new_remain);
 }
 
@@ -102,6 +101,7 @@ char	*get_next_line(int fd)
 {
 	static char	*remain;
 	char		*next_line;
+	char		*new_rem;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -115,6 +115,12 @@ char	*get_next_line(int fd)
 		remain = NULL;
 		return (NULL);
 	}
-	remain = new_remain(remain);
+	new_rem = new_remain(remain);
+	if (!new_rem)
+	{
+		remain = NULL;
+		return (next_line);
+	}
+	remain = new_rem;
 	return (next_line);
 }
