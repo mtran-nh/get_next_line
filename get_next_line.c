@@ -6,22 +6,51 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:04:53 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/31 19:56:30 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:51:24 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*init_remain(char *remain, char *buffer)
+void	new_remain(char *remain, char *buffer)
 {
-	char	*empty;
+	int	i;
+	int	j;
 
-	if (remain)
-		return (remain);
-	empty = ft_strdup("");
-	if (!empty)
-		return (free(buffer), NULL);
-	return (empty);
+	i = 0;
+	if (!remain || !buffer)
+		return ;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i] || !buffer[i + 1])
+	{
+		remain[0] = '\0';
+		return ;
+	}
+	i++;
+	j = 0;
+	while (buffer[i] && j < BUFFER_SIZE)
+		remain[j++] = buffer[i++];
+	remain[j] = '\0';
+}
+
+static char	*init_remain(char *remain)
+{
+	if (remain && remain[0] != '\0')
+		return (ft_strdup(remain));
+	return (ft_strdup(""));
+}
+
+static int	check_read(int read_bytes, char *remain, char *buffer, char *result)
+{
+	if (read_bytes == -1)
+	{
+		remain[0] = '\0';
+		free(buffer);
+		free(result);
+		return (1);
+	}
+	return (0);
 }
 
 char	*read_until_nextline(int fd, char *remain)
@@ -29,98 +58,47 @@ char	*read_until_nextline(int fd, char *remain)
 	char	*buffer;
 	int		read_bytes;
 	char	*temp;
+	char	*result;
 
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
-		return (free(remain), NULL);
-	remain = init_remain(remain, buffer);
-	if (!remain)
 		return (NULL);
+	result = init_remain(remain);
+	if (!result)
+		return (free(buffer), NULL);
 	read_bytes = 1;
-	while (!ft_strchr(remain, '\n') && read_bytes != 0)
+	while (!ft_strchr(result, '\n') && read_bytes != 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
-			return (free(buffer), free(remain), NULL);
+		if (check_read(read_bytes, remain, buffer, result) == 1)
+			return (NULL);
 		buffer[read_bytes] = '\0';
-		temp = remain;
-		remain = ft_strjoin(temp, buffer);
+		temp = result;
+		result = ft_strjoin(temp, buffer);
 		free(temp);
-		if (!remain)
+		if (!result)
 			return (free(buffer), NULL);
 	}
-	return (free(buffer), remain);
-}
-
-char	*write_line(char *remain)
-{
-	char	*line;
-	int		i;
-
-	if (!remain || remain[0] == '\0')
-		return (NULL);
-	i = 0;
-	while (remain[i] && remain[i] != '\n')
-		i++;
-	if (remain[i] == '\n')
-		i++;
-	line = malloc(i + 1);
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (remain[i] && remain[i] != '\n')
-	{
-		line[i] = remain[i];
-		i++;
-	}
-	if (remain[i] == '\n')
-		line[i++] = '\n';
-	line[i] = '\0';
-	return (line);
-}
-
-char	*new_remain(char *remain)
-{
-	int		i;
-	char	*new_remain;
-
-	i = 0;
-	if (!remain)
-		return (NULL);
-	while (remain[i] && remain[i] != '\n')
-		i++;
-	if (!remain[i] || !remain[i + 1])
-		return (free(remain), NULL);
-	new_remain = ft_strdup(remain + i + 1);
-	if (!new_remain)
-		return (free(remain), NULL);
-	return (free(remain), new_remain);
+	return (free(buffer), new_remain(remain, result), result);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remain;
+	static char	remain[BUFFER_SIZE + 1];
+	char		*buffer;
 	char		*next_line;
-	char		*new_rem;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	remain = read_until_nextline(fd, remain);
-	if (!remain)
+	buffer = read_until_nextline(fd, remain);
+	if (!buffer)
 		return (NULL);
-	next_line = write_line(remain);
+	next_line = write_line(buffer);
 	if (!next_line)
 	{
-		free(remain);
-		remain = NULL;
+		free(buffer);
 		return (NULL);
 	}
-	new_rem = new_remain(remain);
-	if (!new_rem)
-	{
-		remain = NULL;
-		return (next_line);
-	}
-	remain = new_rem;
+	free(buffer);
 	return (next_line);
 }

@@ -6,7 +6,7 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:05:00 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/07/31 20:00:31 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:51:14 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,30 @@ char	*ft_strchr(const char *s, int c)
 		s++;
 	}
 	return ((char *)s);
+}
+
+char	*write_line(char *buffer)
+{
+	char	*line;
+	int		i;
+	int		len;
+
+	if (!buffer || buffer[0] == '\0')
+		return (NULL);
+	len = 0;
+	while (buffer[len] && buffer[len] != '\n')
+		len++;
+	if (buffer[len] == '\n')
+		len++;
+	line = malloc(len + 1);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
 }
