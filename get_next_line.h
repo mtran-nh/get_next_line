@@ -6,7 +6,7 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:35:12 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/08/07 16:23:37 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:30:48 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ char	*ft_strchr(const char *s, int c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*read_until_nextline(int fd, char *remain);
 char	*write_line(char *remain);
-void	new_remain(char *remain, char *buffer);
+void	new_remain(char *remain, char *result);
 char	*get_next_line(int fd);
 #endif

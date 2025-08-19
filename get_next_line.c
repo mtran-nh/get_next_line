@@ -6,31 +6,31 @@
 /*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 17:04:53 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/08/07 18:51:24 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:30:33 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	new_remain(char *remain, char *buffer)
+void	new_remain(char *remain, char *result)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	if (!remain || !buffer)
+	if (!remain || !result)
 		return ;
-	while (buffer[i] && buffer[i] != '\n')
+	while (result[i] && result[i] != '\n')
 		i++;
-	if (!buffer[i] || !buffer[i + 1])
+	if (!result[i] || !result[i + 1])
 	{
 		remain[0] = '\0';
 		return ;
 	}
 	i++;
 	j = 0;
-	while (buffer[i] && j < BUFFER_SIZE)
-		remain[j++] = buffer[i++];
+	while (result[i] && j < BUFFER_SIZE)
+		remain[j++] = result[i++];
 	remain[j] = '\0';
 }
 
