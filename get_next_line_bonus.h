@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtran-nh <mtran-nh@student.42heilbronn.de> +#+  +:+       +#+        */
+/*   By: mtran-nh <mtran-nh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 21:02:24 by mtran-nh          #+#    #+#             */
-/*   Updated: 2025/08/19 16:33:43 by mtran-nh         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:12:59 by mtran-nh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 #  define BUFFER_SIZE 42
 # endif
 
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <limits.h>
 
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);

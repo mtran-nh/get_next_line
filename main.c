@@ -1,12 +1,13 @@
-#include <fcntl.h>
 #include "get_next_line.h"
+#include <fcntl.h>
 
-int main()
+int	main(void)
 {
-	int fd1;
-	char *line1;
-	int fd2;
-	char *line2;
+	int		fd1;
+	char	*line1;
+	int		fd2;
+	char	*line2;
+
 	fd1 = open("file1", O_RDONLY);
 	if (fd1 < 0)
 		return (1);
@@ -26,7 +27,6 @@ int main()
 		free(line2);
 	}
 	close(fd2);
-
 	return (0);
 }
 
@@ -79,5 +79,5 @@ int main()
 
 //     close(fd1);
 //     close(fd2);
-//     return 0;
+//     return (0);
 // }
